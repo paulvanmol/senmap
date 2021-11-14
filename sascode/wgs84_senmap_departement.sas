@@ -86,8 +86,16 @@ quit;
  * Generated on web client 'https://viya401.zeus.sashq-d.openstack.sas.com/SASStudio/main?locale=en_US&launchedFromAppSwitcher=true&useTransitionSplash=true'
  */
 
-proc sort data=MAPSCSTM.SENMAP_DEPARTEMENT_ATTR 
-		out=MAPSCSTM.SENMAP_DEPARTEMENT_ATTROK nodupkey equals;
+proc sort data=mapscstm.SENMAP_&level._ATTR 
+		out=mapscstm.SENMAP_&level._ATTROK  nodupkey equals;
 	by &ID;
 run;
+proc casutil ; 
+droptable casdata="senmap_&level.attr" incaslib="&maplib" quiet; 
+load data=mapscstm.senmap_&level._attrok casout="senmap_&level.attr" outcaslib="&maplib" promote; 
+quit; 
+proc datasets lib=mapscstm; 
+delete senmap_&level._attr; 
+change senmap_&level._attrok=senmap_&level._attr; 
+quit; 
 cas mysession terminate;

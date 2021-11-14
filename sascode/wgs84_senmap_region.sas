@@ -81,5 +81,12 @@ proc sort data=MAPSCSTM.SENMAP_&level._ATTR out=MAPSCSTM.SENMAP_&level._ATTROK
 		nodupkey equals;
 	by &ID;
 run;
-
+proc casutil ; 
+droptable casdata="senmap_&level.attr" incaslib="&maplib" quiet; 
+load data=mapscstm.senmap_&level._attrok casout="senmap_&level.attr" outcaslib="&maplib" promote; 
+quit; 
+proc datasets lib=mapscstm; 
+delete senmap_&level._attr; 
+change senmap_&level._attrok=senmap_&level._attr;
+quit;  
 cas mysession terminate;
