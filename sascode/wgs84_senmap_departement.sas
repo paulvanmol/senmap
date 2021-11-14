@@ -1,5 +1,7 @@
-%let path=/srv/nfs/kubedata/compute-landingzone/sonatel/senmap;
+/*%let path=/srv/nfs/kubedata/compute-landingzone/sonatel/senmap;*/
+%let path=/home/christine/senmap;
 %let level=Departement; 
+%let ID=code_dep;
 %let maplib=public;
 %let cashost=sas-cas-server-default-client; 
 %let casport=5570; 
@@ -29,7 +31,7 @@ cas mysession terminate ;
 %shpcntnt(shapefilepath=&path/ShapefileSNG/&level/&level._SN.shp)
 
 %shpimprt(shapefilepath=&path/ShapefileSNG/&level/&level._SN.shp,
-			ID=CODE_DEP,
+			ID=&ID,
 			outtable=senmap_&level,
 			cashost=&cashost,
 			casport=&casport,
@@ -46,10 +48,10 @@ caslib _all_ assign;
 data &maplib..senmap_&level (promote=yes replace=yes 
 drop=	  pop_hom pop_fem pop_total surface) 
 &maplib..senmap_&level._attr (promote=yes replace=yes 
-keep=code_dep ncode_dep nom pop_hom pop_fem pop_total surface);
-set casuser.senmap_&level (rename=(code_dep=ncode_dep));
-length Code_dep $12;
-code_dep=cats('SN',ncode_dep); 
+keep=&ID c&ID nom pop_hom pop_fem pop_total surface);
+set casuser.senmap_&level ;
+length c&ID $12;
+c&ID=cats('SN',&ID); 
 *drop 
 	  pop_hom pop_fem pop_total surface; 
 run; 
@@ -64,7 +66,7 @@ cas mysession terminate;
 /* from "Libraries" and select "Properties". Then look for the entry named "Server Session */
 /* CASLIB".                                                                                */
 cas mysession; 
-
+caslib _all_ assign;
 proc casutil;
  save casdata="senmap_&level" incaslib="&maplib" outcaslib="&maplib" replace;
 
@@ -86,6 +88,6 @@ quit;
 
 proc sort data=MAPSCSTM.SENMAP_DEPARTEMENT_ATTR 
 		out=MAPSCSTM.SENMAP_DEPARTEMENT_ATTROK nodupkey equals;
-	by ncode_dep Code_dep;
+	by &ID;
 run;
 cas mysession terminate;
