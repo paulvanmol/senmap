@@ -1,5 +1,7 @@
 %let path=/srv/nfs/kubedata/compute-landingzone/sonatel/senmap;
+%let path=/home/christine/senmap;
 %let level=arrondissement; 
+%let ID=CODE; 
 %let maplib=public;
 %let cashost=sas-cas-server-default-client; 
 %let casport=5570; 
@@ -42,9 +44,9 @@ cas mysession;
 caslib _all_ assign;
 
 data &maplib..senmap_&level (promote=yes replace=yes);
-set casuser.senmap_&level (rename=(code=numcode));
-length Code $12;
-code=cats('SN',numcode); 
+set casuser.senmap_&level;
+length cCode $12;
+ccode=cats('SN',code); 
 drop 
 	  sum_superf  shape_Area shape_leng shape_le_1; 
 run; 
