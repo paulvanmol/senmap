@@ -5,7 +5,7 @@
 %let maplib=public;
 %let cashost=server.demo.sas.com; 
 %let casport=5570; 
-
+libname mapscstm "&path/sasdata";
 
 cas mysession; 
 /*****************************************************************************/
@@ -60,10 +60,12 @@ cas mysession terminate;
 /* from "Libraries" and select "Properties". Then look for the entry named "Server Session */
 /* CASLIB".                                                                                */
 cas mysession; 
-
+caslib _all_ assign;
 proc casutil;
  save casdata="senmap_&level" incaslib="&maplib" outcaslib="&maplib" replace;
 
 quit;
-
+proc copy inlib=public outlib=mapscstm; 
+select senmap_&level /*senmap_&level._attr*/; 
+quit; 
 cas mysession terminate;
