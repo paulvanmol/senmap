@@ -3,7 +3,7 @@
 %let level=Departement; 
 %let ID=code_dep;
 %let maplib=public;
-%let cashost=sas-cas-server-default-client; 
+%let cashost=server.demo.sas.com; 
 %let casport=5570; 
 libname mapscstm "&path/sasdata";
 
@@ -51,7 +51,7 @@ drop=	  pop_hom pop_fem pop_total surface)
 keep=&ID c&ID nom pop_hom pop_fem pop_total surface);
 set casuser.senmap_&level ;
 length c&ID $12;
-c&ID=cats('SN',&ID); 
+c&ID=cats('SN',put(&ID,z2.)); 
 *drop 
 	  pop_hom pop_fem pop_total surface; 
 run; 

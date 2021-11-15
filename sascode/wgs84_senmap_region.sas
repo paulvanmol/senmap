@@ -1,9 +1,9 @@
 /*%let path=/srv/nfs/kubedata/compute-landingzone/sonatel/senmap;*/
 %let path=/home/christine/senmap;
 %let level=Region;
-%let ID=code_reg;
+%let ID=NOM;
 %let maplib=public;
-%let cashost=sas-cas-server-default-client;
+%let cashost=server.demo.sas.com;
 %let casport=5570;
 libname mapscstm "&path/sasdata";
 cas mysession;
@@ -25,7 +25,7 @@ proc casutil;
 	quit;
 	cas mysession terminate;
 	%shpcntnt(shapefilepath=&path/ShapefileSNG/&level/&level.s_SN.shp) 
-		%shpimprt(shapefilepath=&path/ShapefileSNG/&level/&level.s_SN.shp, ID=&ID, 
+	%shpimprt(shapefilepath=&path/ShapefileSNG/&level/&level.s_SN.shp, ID=NOM, 
 		outtable=senmap_&level, cashost=&cashost, casport=&casport, caslib='casuser', 
 		reduce=1) 
 		/*****************************************************************************/
@@ -38,10 +38,10 @@ proc casutil;
 
 data &maplib..senmap_&level (promote=yes replace=yes drop=pop_hom pop_fem 
 		pop_total area perimetre pole) &maplib..senmap_&level._attr (promote=yes 
-		replace=yes keep=&ID c&ID nom pop_hom pop_fem pop_total area perimetre pole);
+		replace=yes keep= nom pop_hom pop_fem pop_total area perimetre pole);
 	set casuser.senmap_&level;
-	length c&ID $12;
-	c&ID=cats('SN', &ID);
+	*length c&ID $12;
+	*c&ID=cats('SN', &ID);
 	*drop 
 	  pop_hom pop_fem pop_total surface;
 run;

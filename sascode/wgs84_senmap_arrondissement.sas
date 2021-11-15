@@ -3,7 +3,7 @@
 %let level=arrondissement; 
 %let ID=CODE; 
 %let maplib=public;
-%let cashost=sas-cas-server-default-client; 
+%let cashost=server.demo.sas.com; 
 %let casport=5570; 
 
 
