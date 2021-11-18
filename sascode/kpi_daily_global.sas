@@ -9,6 +9,7 @@ set mapscstm.kpi_daily_global;
 if day ne 0 then do; 
 dayc=put(day,8.);
 daydt=input(dayc,yymmdd8.);
+daydtm1=INTNX('month',t1.daydt,-1,'begin') 
 end; 
 format daydt yymmdd8.; 
 run; 
