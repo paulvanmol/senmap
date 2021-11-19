@@ -1,5 +1,5 @@
-/*%let path=/srv/nfs/kubedata/compute-landingzone/sonatel/senmap;*/
-%let path=/home/christine/senmap;
+%let path=/srv/nfs/kubedata/compute-landingzone/sonatel/senmap;
+/* %let path=/home/christine/senmap; */
 %let level=Departement; 
 %let ID=code_dep;
 %let maplib=public;
